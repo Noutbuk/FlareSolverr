@@ -405,6 +405,11 @@ def _evil_logic(req: V1RequestBase, driver: WebDriver, method: str) -> Challenge
         logging.info("Challenge not detected!")
         res.message = "Challenge not detected!"
 
+    logging.info("Clicking button")
+    # <button> with class 'BotProtectionCard-Button' and not class 'hidden'
+    report1 = driver.find_element_by_xpath("//button[@analytics-label='IAPD - SEC Investment Adviser Report (GZIP)']").click()
+    # WebDriverWait(driver, SHORT_TIMEOUT).until_not(title_is(title))
+    
     challenge_res = ChallengeResolutionResultT({})
     challenge_res.url = driver.current_url
     challenge_res.status = 200  # todo: fix, selenium not provides this info
