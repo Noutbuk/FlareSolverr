@@ -407,7 +407,15 @@ def _evil_logic(req: V1RequestBase, driver: WebDriver, method: str) -> Challenge
 
     logging.info("Clicking button")
     # <button> with class 'BotProtectionCard-Button' and not class 'hidden'
-    report1 = driver.find_element_by_xpath("//button[@analytics-label='IAPD - SEC Investment Adviser Report (GZIP)']").click()
+    button = driver.find_element(
+        by=By.XPATH,
+        value="//button[contains(@class, 'BotProtectionCard-Button') and not(contains(@class, 'hidden'))]",
+    )
+    if button:
+        actions = ActionChains(driver)
+        actions.move_to_element_with_offset(button, 5, 7)
+        actions.click(button)
+        actions.perform()
     # WebDriverWait(driver, SHORT_TIMEOUT).until_not(title_is(title))
     
     challenge_res = ChallengeResolutionResultT({})
