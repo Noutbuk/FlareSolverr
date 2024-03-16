@@ -421,7 +421,7 @@ def _evil_logic(req: V1RequestBase, driver: WebDriver, method: str) -> Challenge
         logging.info("Button clicked. Waiting for modal to hide.")
         # WebDriverWait(driver, SHORT_TIMEOUT).until(invisibility_of_element_located((By.XPATH, '//section[contains(@class, "js-EventEntryListContainer")]//button[contains(text(), "Angebote laden")]')))
         # WebDriverWait(driver, SHORT_TIMEOUT).until(presence_of_element_located((By.CSS_SELECTOR, '.js-BotProtectionModal.hidden')))
-        WebDriverWait(driver, SHORT_TIMEOUT).until(presence_of_element_located((By.XPATH, "//div[contains(@class, 'js-BotProtectionModal') and contains(@class, 'hidden')]")))
+        WebDriverWait(driver, SHORT_TIMEOUT).until(presence_of_element_located((By.XPATH, "//div[contains(@class, 'P24BotProtectionModal') and contains(@class, 'hidden')]")))
     except Exception as e:
         logging.info('Failed to click button: ' + str(e).replace('\n', '\\n'))
     
