@@ -10,7 +10,7 @@ from selenium.common import TimeoutException
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import (
-    presence_of_element_located, staleness_of, title_is)
+    presence_of_element_located, staleness_of, title_is, invisibility_of_element_located)
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -411,12 +411,14 @@ def _evil_logic(req: V1RequestBase, driver: WebDriver, method: str) -> Challenge
         by=By.XPATH,
         value="//button[contains(@class, 'BotProtectionCard-Button') and not(contains(@class, 'hidden'))]",
     )
+    logging.info("Button: " + button)
     if button:
         actions = ActionChains(driver)
         actions.move_to_element_with_offset(button, 5, 7)
         actions.click(button)
         actions.perform()
-    # WebDriverWait(driver, SHORT_TIMEOUT).until_not(title_is(title))
+    # WebDriverWait(driver, SHORT_TIMEOUT).until(invisibility_of_element_located((By.XPATH, '//section[contains(@class, "js-EventEntryListContainer")]//button[contains(text(), "Angebote laden")]')))
+    WebDriverWait(driver, SHORT_TIMEOUT).until(presence_of_element_located((By.CSS_SELECTOR, '.js-BotProtectionModal.hidden')))
     
     challenge_res = ChallengeResolutionResultT({})
     challenge_res.url = driver.current_url
