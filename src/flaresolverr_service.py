@@ -424,14 +424,14 @@ def _evil_logic(req: V1RequestBase, driver: WebDriver, method: str) -> Challenge
         if button:
             logging.info("Button: " + button.text)
             actions = ActionChains(driver)
-            actions.move_to_element_with_offset(button, 5, 7)
+            # actions.move_to_element_with_offset(button, 5, 7)
             actions.click(button)
             actions.perform()
             logging.info("Button clicked. Waiting for modal to hide.")
             # WebDriverWait(driver, SHORT_TIMEOUT).until(invisibility_of_element_located((By.XPATH, '//section[contains(@class, "js-EventEntryListContainer")]//button[contains(text(), "Angebote laden")]')))
             # WebDriverWait(driver, SHORT_TIMEOUT).until(presence_of_element_located((By.CSS_SELECTOR, '.js-BotProtectionModal.hidden')))
             # WebDriverWait(driver, SHORT_TIMEOUT).until(presence_of_element_located((By.XPATH, "//div[contains(@class, 'P24BotProtectionModal') and contains(@class, 'hidden')]")))
-
+            driver.refresh()
             logging.info("Wainting...")
             time.sleep(1)
             try:
@@ -443,6 +443,10 @@ def _evil_logic(req: V1RequestBase, driver: WebDriver, method: str) -> Challenge
                     logging.info("Modal is hidden")
             except Exception as e:
                 logging.info("Modal is not hidden")
+
+
+            logging.info("Refresh page...")
+            driver.refresh()
 
             logging.info("Wainting...")
             time.sleep(2)
