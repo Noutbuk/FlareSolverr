@@ -406,6 +406,15 @@ def _evil_logic(req: V1RequestBase, driver: WebDriver, method: str) -> Challenge
         res.message = "Challenge not detected!"
 
     try:
+        logging.info("Check modal")
+        modal = driver.find_element(
+            by=By.XPATH,
+            value="//div[contains(@class, 'P24BotProtectionModal') and not(contains(@class, 'hidden'))]",
+        )
+        if modal:
+            logging.info("Modal is not hidden")
+        else:
+            logging.info("Modal hidden")
         logging.info("Clicking button")
         # <button> with class 'BotProtectionCard-Button' and not class 'hidden'
         button = driver.find_element(
@@ -418,10 +427,32 @@ def _evil_logic(req: V1RequestBase, driver: WebDriver, method: str) -> Challenge
             actions.move_to_element_with_offset(button, 5, 7)
             actions.click(button)
             actions.perform()
-        logging.info("Button clicked. Waiting for modal to hide.")
-        # WebDriverWait(driver, SHORT_TIMEOUT).until(invisibility_of_element_located((By.XPATH, '//section[contains(@class, "js-EventEntryListContainer")]//button[contains(text(), "Angebote laden")]')))
-        # WebDriverWait(driver, SHORT_TIMEOUT).until(presence_of_element_located((By.CSS_SELECTOR, '.js-BotProtectionModal.hidden')))
-        WebDriverWait(driver, SHORT_TIMEOUT).until(presence_of_element_located((By.XPATH, "//div[contains(@class, 'P24BotProtectionModal') and contains(@class, 'hidden')]")))
+            logging.info("Button clicked. Waiting for modal to hide.")
+            # WebDriverWait(driver, SHORT_TIMEOUT).until(invisibility_of_element_located((By.XPATH, '//section[contains(@class, "js-EventEntryListContainer")]//button[contains(text(), "Angebote laden")]')))
+            # WebDriverWait(driver, SHORT_TIMEOUT).until(presence_of_element_located((By.CSS_SELECTOR, '.js-BotProtectionModal.hidden')))
+            # WebDriverWait(driver, SHORT_TIMEOUT).until(presence_of_element_located((By.XPATH, "//div[contains(@class, 'P24BotProtectionModal') and contains(@class, 'hidden')]")))
+            
+            logging.info("Wainting...")
+            time.sleep(1)
+            modal = driver.find_element(
+                by=By.XPATH,
+                value="//div[contains(@class, 'P24BotProtectionModal') and contains(@class, 'hidden')]",
+            )
+            if modal:
+                logging.info("Modal is hidden")
+            else:
+                logging.info("Modal is not hidden")
+
+            logging.info("Wainting...")
+            time.sleep(1)
+            modal = driver.find_element(
+                by=By.XPATH,
+                value="//div[contains(@class, 'P24BotProtectionModal') and contains(@class, 'hidden')]",
+            )
+            if modal:
+                logging.info("Modal is hidden")
+            else:
+                logging.info("Modal is not hidden")
     except Exception as e:
         logging.info('Failed to click button: ' + str(e).replace('\n', '\\n'))
     
