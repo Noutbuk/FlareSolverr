@@ -22,6 +22,10 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ env.REPOSITORY }}
+          tags: |
+            type=ref,event=branch,suffix=${{ github.run_number }}
+            type=ref,event=branch
+            type=ref,event=tag
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
