@@ -411,8 +411,8 @@ def _evil_logic(req: V1RequestBase, driver: WebDriver, method: str) -> Challenge
         by=By.XPATH,
         value="//button[contains(@class, 'BotProtectionCard-Button') and not(contains(@class, 'hidden'))]",
     )
-    logging.info("Button: " + button)
     if button:
+        logging.info("Button: " + button.text)
         actions = ActionChains(driver)
         actions.move_to_element_with_offset(button, 5, 7)
         actions.click(button)
