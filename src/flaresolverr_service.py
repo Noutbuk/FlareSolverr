@@ -405,20 +405,23 @@ def _evil_logic(req: V1RequestBase, driver: WebDriver, method: str) -> Challenge
         logging.info("Challenge not detected!")
         res.message = "Challenge not detected!"
 
-    logging.info("Clicking button")
-    # <button> with class 'BotProtectionCard-Button' and not class 'hidden'
-    button = driver.find_element(
-        by=By.XPATH,
-        value="//button[contains(@class, 'BotProtectionCard-Button') and not(contains(@class, 'hidden'))]",
-    )
-    if button:
-        logging.info("Button: " + button.text)
-        actions = ActionChains(driver)
-        actions.move_to_element_with_offset(button, 5, 7)
-        actions.click(button)
-        actions.perform()
-    # WebDriverWait(driver, SHORT_TIMEOUT).until(invisibility_of_element_located((By.XPATH, '//section[contains(@class, "js-EventEntryListContainer")]//button[contains(text(), "Angebote laden")]')))
-    WebDriverWait(driver, SHORT_TIMEOUT).until(presence_of_element_located((By.CSS_SELECTOR, '.js-BotProtectionModal.hidden')))
+    try:
+        logging.info("Clicking button")
+        # <button> with class 'BotProtectionCard-Button' and not class 'hidden'
+        button = driver.find_element(
+            by=By.XPATH,
+            value="//button[contains(@class, 'BotProtectionCard-Button') and not(contains(@class, 'hidden'))]",
+        )
+        if button:
+            logging.info("Button: " + button.text)
+            actions = ActionChains(driver)
+            actions.move_to_element_with_offset(button, 5, 7)
+            actions.click(button)
+            actions.perform()
+        # WebDriverWait(driver, SHORT_TIMEOUT).until(invisibility_of_element_located((By.XPATH, '//section[contains(@class, "js-EventEntryListContainer")]//button[contains(text(), "Angebote laden")]')))
+        WebDriverWait(driver, SHORT_TIMEOUT).until(presence_of_element_located((By.CSS_SELECTOR, '.js-BotProtectionModal.hidden')))
+    except Exception as e:
+        logging.info('Failed to click button: ' + str(e).replace('\n', '\\n'))
     
     challenge_res = ChallengeResolutionResultT({})
     challenge_res.url = driver.current_url
